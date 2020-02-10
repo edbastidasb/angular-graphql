@@ -1,0 +1,133 @@
+<br>
+<button type="button" class="btn btn-primary" (click)="open(content)"> <i class="fa fa-plus"> </i>
+  Agregar pizza
+</button>
+
+<button type="button" class="btn btn-success" (click)="openIngrediente(modalIngredientes)"> <i class="fa fa-plus"> </i>
+  Agregar ingredientes
+</button>
+
+<hr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Origen</th>
+      <th scope="col">Ingredientes</th>
+      <th scope="col">Opción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let pizza of pizzas | async;">
+      <td>
+        {{ pizza.name }}
+      </td>
+      <td>
+        {{ pizza.origin }}
+      </td>
+      <td>
+        <div *ngFor="let in of pizza.ingredients">
+          {{in.name}} </div>
+      </td>
+      <td>
+        <button type="button" class="btn btn-danger" (click)="eliminarPizza(pizza.id, pizza.name)">
+          <i class="fa fa-trash-o"></i>
+        </button>
+        <button type="button" class="btn btn-success" (click)="editarPizza(pizza, content)">
+          <i class="fa fa-edit"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Pizza</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="namePizza">Nombre:</label>
+        <input id="namePizza" type="text" class="form-control" [(ngModel)]="namePizza" name="namePizza" />
+        <label for="originPizza">Origen:</label>
+        <input id="originPizza" type="text" class="form-control" [(ngModel)]="originPizza" name="orginPizza" />
+        <label for="idIngredient">Ingrediente:</label>
+        <input id="idIngredient" disabled type="text" class="form-control" [(ngModel)]="idIngredient"
+          name="idIngredient" />
+        <label for="ingredientes">Seleccione ingrediente:</label>
+        <select id="ingredientes" class="form-control" [(ngModel)]="idIngrediente" name="selected"
+          (change)="seleccionarIngrediente()">
+          <option *ngFor="let i of ingredientes | async;" value="{{i.id}}">{{i.name}}</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="guardar()">Guardar</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('CAncel click')">Cancelar</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalIngredientes let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Ingredientes</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="nameIngrediente2">Nombre:</label>
+        <input id="nameIngrediente2" type="text" class="form-control" [(ngModel)]="nameIngrediente" name="nameIn" />
+        <label for="calorias">Calorias:</label>
+        <input id="calorias" type="text" class="form-control" [(ngModel)]="caloriasIngrediente" name="calorias" />
+        <br>
+        <button type="button" class="btn btn-info" (click)="guardarIngriente()" [disabled]="editarIngrediente"> <i
+            class="fa fa-plus"> </i>
+          Agregar
+        </button>
+        <button type="button" class="btn btn-success" (click)="actualizarIngrediente()" [disabled]="!editarIngrediente">
+          <i class="fa fa-plus"> </i>
+          Actualizar
+        </button>
+        <hr>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Calorias</th>
+              <th scope="col">Opción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let in of ingredientes | async;">
+              <td>
+                {{ in.name }}
+              </td>
+              <td>
+                {{ in.calories }}
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger" (click)="eliminarIngrediente(in.id, in.name)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+                <button type="button" class="btn btn-success" (click)="ingredienteEditar(in)">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+
+    <button type="button" class="btn btn-danger" (click)="modal.close('CAncel click')">Cancelar</button>
+  </div>
+</ng-template>
